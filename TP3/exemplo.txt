@@ -1,0 +1,18 @@
+Este é um exemplo de texto que contém várias sequências de dígitos, como 123, 4567 e 890. 
+O programa deve somar todas essas sequências e produzir o resultado final. 
+Além disso, há algumas ocorrências das palavras "On" e "Off" que devem controlar o comportamento do programa. 
+Por exemplo, se o programa estiver ligado ("On"), ele deve somar as sequências de dígitos. 
+No entanto, se encontrar a palavra "Off", ele deve parar de somar até que encontre a palavra "On" novamente. 
+Se encontrar o caractere "=", ele deve imprimir o resultado da soma até aquele ponto.
+
+On
+Agora o programa está ligado e irá somar todas as sequências de dígitos que encontrar. Por exemplo, 123 + 4567 + 890 = 5580.
+
+Off
+O programa está desligado agora, então ele não irá somar as sequências de dígitos 322 234 562 -132 =.
+
+On
+O programa está ligado novamente. Ele deve continuar a somar as sequências de dígitos. Por exemplo, 1234 + 567 = 1801.
+
+=
+Aqui está o resultado da soma até este ponto: 5580 + 1801 = 7381. -27723 = Este resultado deve ser produzido como saída.

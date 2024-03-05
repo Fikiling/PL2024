@@ -17,11 +17,11 @@ def markdown_to_html(markdown):
     markdown = re.sub(r"^[0-9]+\.(.+)$", r"\t<li>\1</li>", markdown, flags = re.MULTILINE)
     markdown = re.sub(r"((\t<li>.+</li>\n)+)", r"<ol>\n\1</ol>\n", markdown, flags = re.MULTILINE)
     
-    # Link
-    markdown = re.sub(r'\[(.*?)\]\((.*?)\)', r'<a href="\2">\1</a>', markdown)
-    
     # Imagem
     markdown = re.sub(r'!\[(.*?)\]\((.*?)\)', r'<img src="\2" alt="\1">', markdown)
+
+    # Link
+    markdown = re.sub(r'\[(.*?)\]\((.*?)\)', r'<a href="\2">\1</a>', markdown)
     
     return markdown
 
