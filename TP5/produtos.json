@@ -1,0 +1,18 @@
+[
+    {"cod": "A23", "nome": "água 0.5L", "quant": 8, "preco": 0.7},
+    {"cod": "B12", "nome": "café", "quant": 15, "preco": 0.5},
+    {"cod": "C78", "nome": "pão de queijo", "quant": 20, "preco": 1.2},
+    {"cod": "D45", "nome": "leite 1L", "quant": 10, "preco": 1.0},
+    {"cod": "E56", "nome": "kit-kat", "quant": 25, "preco": 2.0},
+    {"cod": "F89", "nome": "croissant misto", "quant": 12, "preco": 3.5},
+    {"cod": "G34", "nome": "bolo de chocolate", "quant": 18, "preco": 2.3},
+    {"cod": "H67", "nome": "sandes atum", "quant": 22, "preco": 2.8},
+    {"cod": "I90", "nome": "caneta bic", "quant": 14, "preco": 1.0},
+    {"cod": "J11", "nome": "malboro", "quant": 9, "preco": 5.0},
+    {"cod": "K23", "nome": "control last long", "quant": 30, "preco": 6.8},
+    {"cod": "L45", "nome": "wrap vegan", "quant": 15, "preco": 3.2},
+    {"cod": "M67", "nome": "snkickers", "quant": 20, "preco": 3.5},
+    {"cod": "N89", "nome": "prozis bar", "quant": 25, "preco": 2.0},
+    {"cod": "O11", "nome": "ruffles presunto", "quant": 12, "preco": 4.5}
+  ]
+  
