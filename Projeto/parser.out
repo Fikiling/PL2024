@@ -1,0 +1,307 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> input
+Rule 1     input -> input linha
+Rule 2     input -> empty
+Rule 3     linha -> expNum
+Rule 4     expNum -> expNum fator
+Rule 5     expNum -> fator
+Rule 6     fator -> NUM
+Rule 7     fator -> operador
+Rule 8     operador -> SOMA
+Rule 9     operador -> SUBTRACAO
+Rule 10    operador -> DIVISAO
+Rule 11    operador -> MULTIPLICACAO
+Rule 12    operador -> RESTO
+Rule 13    operador -> POTENCIA
+Rule 14    empty -> <empty>
+
+Terminals, with rules where they appear
+
+DIVISAO              : 10
+MULTIPLICACAO        : 11
+NUM                  : 6
+POTENCIA             : 13
+RESTO                : 12
+SOMA                 : 8
+SUBTRACAO            : 9
+error                : 
+
+Nonterminals, with rules where they appear
+
+empty                : 2
+expNum               : 3 4
+fator                : 4 5
+input                : 1 0
+linha                : 1
+operador             : 7
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . input
+    (1) input -> . input linha
+    (2) input -> . empty
+    (14) empty -> .
+
+    NUM             reduce using rule 14 (empty -> .)
+    SOMA            reduce using rule 14 (empty -> .)
+    SUBTRACAO       reduce using rule 14 (empty -> .)
+    DIVISAO         reduce using rule 14 (empty -> .)
+    MULTIPLICACAO   reduce using rule 14 (empty -> .)
+    RESTO           reduce using rule 14 (empty -> .)
+    POTENCIA        reduce using rule 14 (empty -> .)
+    $end            reduce using rule 14 (empty -> .)
+
+    input                          shift and go to state 1
+    empty                          shift and go to state 2
+
+state 1
+
+    (0) S' -> input .
+    (1) input -> input . linha
+    (3) linha -> . expNum
+    (4) expNum -> . expNum fator
+    (5) expNum -> . fator
+    (6) fator -> . NUM
+    (7) fator -> . operador
+    (8) operador -> . SOMA
+    (9) operador -> . SUBTRACAO
+    (10) operador -> . DIVISAO
+    (11) operador -> . MULTIPLICACAO
+    (12) operador -> . RESTO
+    (13) operador -> . POTENCIA
+
+    NUM             shift and go to state 6
+    SOMA            shift and go to state 8
+    SUBTRACAO       shift and go to state 9
+    DIVISAO         shift and go to state 10
+    MULTIPLICACAO   shift and go to state 11
+    RESTO           shift and go to state 12
+    POTENCIA        shift and go to state 13
+
+    linha                          shift and go to state 3
+    expNum                         shift and go to state 4
+    fator                          shift and go to state 5
+    operador                       shift and go to state 7
+
+state 2
+
+    (2) input -> empty .
+
+    NUM             reduce using rule 2 (input -> empty .)
+    SOMA            reduce using rule 2 (input -> empty .)
+    SUBTRACAO       reduce using rule 2 (input -> empty .)
+    DIVISAO         reduce using rule 2 (input -> empty .)
+    MULTIPLICACAO   reduce using rule 2 (input -> empty .)
+    RESTO           reduce using rule 2 (input -> empty .)
+    POTENCIA        reduce using rule 2 (input -> empty .)
+    $end            reduce using rule 2 (input -> empty .)
+
+
+state 3
+
+    (1) input -> input linha .
+
+    NUM             reduce using rule 1 (input -> input linha .)
+    SOMA            reduce using rule 1 (input -> input linha .)
+    SUBTRACAO       reduce using rule 1 (input -> input linha .)
+    DIVISAO         reduce using rule 1 (input -> input linha .)
+    MULTIPLICACAO   reduce using rule 1 (input -> input linha .)
+    RESTO           reduce using rule 1 (input -> input linha .)
+    POTENCIA        reduce using rule 1 (input -> input linha .)
+    $end            reduce using rule 1 (input -> input linha .)
+
+
+state 4
+
+    (3) linha -> expNum .
+    (4) expNum -> expNum . fator
+    (6) fator -> . NUM
+    (7) fator -> . operador
+    (8) operador -> . SOMA
+    (9) operador -> . SUBTRACAO
+    (10) operador -> . DIVISAO
+    (11) operador -> . MULTIPLICACAO
+    (12) operador -> . RESTO
+    (13) operador -> . POTENCIA
+
+  ! shift/reduce conflict for NUM resolved as shift
+  ! shift/reduce conflict for SOMA resolved as shift
+  ! shift/reduce conflict for SUBTRACAO resolved as shift
+  ! shift/reduce conflict for DIVISAO resolved as shift
+  ! shift/reduce conflict for MULTIPLICACAO resolved as shift
+  ! shift/reduce conflict for RESTO resolved as shift
+  ! shift/reduce conflict for POTENCIA resolved as shift
+    $end            reduce using rule 3 (linha -> expNum .)
+    NUM             shift and go to state 6
+    SOMA            shift and go to state 8
+    SUBTRACAO       shift and go to state 9
+    DIVISAO         shift and go to state 10
+    MULTIPLICACAO   shift and go to state 11
+    RESTO           shift and go to state 12
+    POTENCIA        shift and go to state 13
+
+  ! NUM             [ reduce using rule 3 (linha -> expNum .) ]
+  ! SOMA            [ reduce using rule 3 (linha -> expNum .) ]
+  ! SUBTRACAO       [ reduce using rule 3 (linha -> expNum .) ]
+  ! DIVISAO         [ reduce using rule 3 (linha -> expNum .) ]
+  ! MULTIPLICACAO   [ reduce using rule 3 (linha -> expNum .) ]
+  ! RESTO           [ reduce using rule 3 (linha -> expNum .) ]
+  ! POTENCIA        [ reduce using rule 3 (linha -> expNum .) ]
+
+    fator                          shift and go to state 14
+    operador                       shift and go to state 7
+
+state 5
+
+    (5) expNum -> fator .
+
+    NUM             reduce using rule 5 (expNum -> fator .)
+    SOMA            reduce using rule 5 (expNum -> fator .)
+    SUBTRACAO       reduce using rule 5 (expNum -> fator .)
+    DIVISAO         reduce using rule 5 (expNum -> fator .)
+    MULTIPLICACAO   reduce using rule 5 (expNum -> fator .)
+    RESTO           reduce using rule 5 (expNum -> fator .)
+    POTENCIA        reduce using rule 5 (expNum -> fator .)
+    $end            reduce using rule 5 (expNum -> fator .)
+
+
+state 6
+
+    (6) fator -> NUM .
+
+    NUM             reduce using rule 6 (fator -> NUM .)
+    SOMA            reduce using rule 6 (fator -> NUM .)
+    SUBTRACAO       reduce using rule 6 (fator -> NUM .)
+    DIVISAO         reduce using rule 6 (fator -> NUM .)
+    MULTIPLICACAO   reduce using rule 6 (fator -> NUM .)
+    RESTO           reduce using rule 6 (fator -> NUM .)
+    POTENCIA        reduce using rule 6 (fator -> NUM .)
+    $end            reduce using rule 6 (fator -> NUM .)
+
+
+state 7
+
+    (7) fator -> operador .
+
+    NUM             reduce using rule 7 (fator -> operador .)
+    SOMA            reduce using rule 7 (fator -> operador .)
+    SUBTRACAO       reduce using rule 7 (fator -> operador .)
+    DIVISAO         reduce using rule 7 (fator -> operador .)
+    MULTIPLICACAO   reduce using rule 7 (fator -> operador .)
+    RESTO           reduce using rule 7 (fator -> operador .)
+    POTENCIA        reduce using rule 7 (fator -> operador .)
+    $end            reduce using rule 7 (fator -> operador .)
+
+
+state 8
+
+    (8) operador -> SOMA .
+
+    NUM             reduce using rule 8 (operador -> SOMA .)
+    SOMA            reduce using rule 8 (operador -> SOMA .)
+    SUBTRACAO       reduce using rule 8 (operador -> SOMA .)
+    DIVISAO         reduce using rule 8 (operador -> SOMA .)
+    MULTIPLICACAO   reduce using rule 8 (operador -> SOMA .)
+    RESTO           reduce using rule 8 (operador -> SOMA .)
+    POTENCIA        reduce using rule 8 (operador -> SOMA .)
+    $end            reduce using rule 8 (operador -> SOMA .)
+
+
+state 9
+
+    (9) operador -> SUBTRACAO .
+
+    NUM             reduce using rule 9 (operador -> SUBTRACAO .)
+    SOMA            reduce using rule 9 (operador -> SUBTRACAO .)
+    SUBTRACAO       reduce using rule 9 (operador -> SUBTRACAO .)
+    DIVISAO         reduce using rule 9 (operador -> SUBTRACAO .)
+    MULTIPLICACAO   reduce using rule 9 (operador -> SUBTRACAO .)
+    RESTO           reduce using rule 9 (operador -> SUBTRACAO .)
+    POTENCIA        reduce using rule 9 (operador -> SUBTRACAO .)
+    $end            reduce using rule 9 (operador -> SUBTRACAO .)
+
+
+state 10
+
+    (10) operador -> DIVISAO .
+
+    NUM             reduce using rule 10 (operador -> DIVISAO .)
+    SOMA            reduce using rule 10 (operador -> DIVISAO .)
+    SUBTRACAO       reduce using rule 10 (operador -> DIVISAO .)
+    DIVISAO         reduce using rule 10 (operador -> DIVISAO .)
+    MULTIPLICACAO   reduce using rule 10 (operador -> DIVISAO .)
+    RESTO           reduce using rule 10 (operador -> DIVISAO .)
+    POTENCIA        reduce using rule 10 (operador -> DIVISAO .)
+    $end            reduce using rule 10 (operador -> DIVISAO .)
+
+
+state 11
+
+    (11) operador -> MULTIPLICACAO .
+
+    NUM             reduce using rule 11 (operador -> MULTIPLICACAO .)
+    SOMA            reduce using rule 11 (operador -> MULTIPLICACAO .)
+    SUBTRACAO       reduce using rule 11 (operador -> MULTIPLICACAO .)
+    DIVISAO         reduce using rule 11 (operador -> MULTIPLICACAO .)
+    MULTIPLICACAO   reduce using rule 11 (operador -> MULTIPLICACAO .)
+    RESTO           reduce using rule 11 (operador -> MULTIPLICACAO .)
+    POTENCIA        reduce using rule 11 (operador -> MULTIPLICACAO .)
+    $end            reduce using rule 11 (operador -> MULTIPLICACAO .)
+
+
+state 12
+
+    (12) operador -> RESTO .
+
+    NUM             reduce using rule 12 (operador -> RESTO .)
+    SOMA            reduce using rule 12 (operador -> RESTO .)
+    SUBTRACAO       reduce using rule 12 (operador -> RESTO .)
+    DIVISAO         reduce using rule 12 (operador -> RESTO .)
+    MULTIPLICACAO   reduce using rule 12 (operador -> RESTO .)
+    RESTO           reduce using rule 12 (operador -> RESTO .)
+    POTENCIA        reduce using rule 12 (operador -> RESTO .)
+    $end            reduce using rule 12 (operador -> RESTO .)
+
+
+state 13
+
+    (13) operador -> POTENCIA .
+
+    NUM             reduce using rule 13 (operador -> POTENCIA .)
+    SOMA            reduce using rule 13 (operador -> POTENCIA .)
+    SUBTRACAO       reduce using rule 13 (operador -> POTENCIA .)
+    DIVISAO         reduce using rule 13 (operador -> POTENCIA .)
+    MULTIPLICACAO   reduce using rule 13 (operador -> POTENCIA .)
+    RESTO           reduce using rule 13 (operador -> POTENCIA .)
+    POTENCIA        reduce using rule 13 (operador -> POTENCIA .)
+    $end            reduce using rule 13 (operador -> POTENCIA .)
+
+
+state 14
+
+    (4) expNum -> expNum fator .
+
+    NUM             reduce using rule 4 (expNum -> expNum fator .)
+    SOMA            reduce using rule 4 (expNum -> expNum fator .)
+    SUBTRACAO       reduce using rule 4 (expNum -> expNum fator .)
+    DIVISAO         reduce using rule 4 (expNum -> expNum fator .)
+    MULTIPLICACAO   reduce using rule 4 (expNum -> expNum fator .)
+    RESTO           reduce using rule 4 (expNum -> expNum fator .)
+    POTENCIA        reduce using rule 4 (expNum -> expNum fator .)
+    $end            reduce using rule 4 (expNum -> expNum fator .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for NUM in state 4 resolved as shift
+WARNING: shift/reduce conflict for SOMA in state 4 resolved as shift
+WARNING: shift/reduce conflict for SUBTRACAO in state 4 resolved as shift
+WARNING: shift/reduce conflict for DIVISAO in state 4 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLICACAO in state 4 resolved as shift
+WARNING: shift/reduce conflict for RESTO in state 4 resolved as shift
+WARNING: shift/reduce conflict for POTENCIA in state 4 resolved as shift
