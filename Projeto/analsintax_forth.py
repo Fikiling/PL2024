@@ -136,12 +136,17 @@ def p_elem_PRINTSTRING(p):
 
 def p_elem_SWAP(p):
     'elem : SWAP'
-    global myStack
-    elem1 = myStack.pop()
-    elem2 = myStack.pop()
-    myStack.append(elem1)
-    myStack.append(elem2)
-    p[0] = '\tswap\n'
+    global myStack, flag_function
+    if flag_function == 0:
+        if len(myStack) < 2:
+            raise Exception('Not enough elements in the stack to perform an operation.')
+        elem1 = myStack.pop()
+        elem2 = myStack.pop()
+        myStack.append(elem1)
+        myStack.append(elem2)
+        p[0] = '\tswap\n'
+    else:
+        p[0] = '\tswap\n'
 
 def p_elem_CR(p):
     'elem : CR'
@@ -150,10 +155,15 @@ def p_elem_CR(p):
 #--------------------------------------------------------
 def p_elem_EMIT(p):
     'elem : EMIT'
-    global myStack
-    elem = myStack.pop()
-    if type(elem) != int:
-        raise Exception('Invalid type for operation, the last element in the stack must be an integer.\n')
+    global myStack, flag_function
+    if flag_function == 0:
+        if len(myStack) == 0:
+            raise Exception('Not enough elements in the stack to perform an operation.')
+        elem = myStack.pop()
+        if type(elem) != int:
+            raise Exception('Invalid type for operation, the last element in the stack must be an integer.\n')
+        else:
+            p[0] = '\writechr\n'
     else:
         p[0] = '\writechr\n'
 
@@ -187,37 +197,54 @@ def p_elem_KEY(p):
 
 def p_elem_DUP(p):
     'elem : DUP'
-    global myStack
-    elem = myStack.pop()
-    myStack.append(elem)
-    myStack.append(elem)
-    p[0] = '\tdup 1\n'
+    global myStack, flag_function
+
+    if flag_function == 0:
+        if len(myStack) == 0:
+            raise Exception('Not enough elements in the stack to perform an operation.')
+        elem = myStack.pop()
+        myStack.append(elem)
+        myStack.append(elem)
+        p[0] = '\tdup 1\n'
+    else:
+        p[0] = '\tdup 1\n'
 
 def p_elem_2DUP(p):
     'elem : 2DUP'
     global myStack
+    
+    if len(myStack) < 2:
+        raise Exception('Not enough elements in the stack to perform an operation.')
+    
     elem1 = myStack.pop()
     elem2 = myStack.pop()
     code = '\tpop 2\n'
     if (type(elem1) == int and type(elem2) != int):
-        code += f'pushi {elem1}\npushs {elem2}\npushi {elem1}\npushs {elem2}\n'
+        code += f'\tpushi {elem1}\n\tpushs {elem2}\n\tpushi {elem1}\n\tpushs {elem2}\n'
     if (type(elem1) == int and type(elem2) == int):
-        code += f'pushi {elem1}\npushi {elem2}\npushi {elem1}\npushi {elem2}\n'
+        code += f'\tpushi {elem1}\n\tpushi {elem2}\n\tpushi {elem1}\n\tpushi {elem2}\n'
     elif (type(elem1) != int and type(elem2) == int):
-        code += f'pushs {elem1}\npushi {elem2}\npushs {elem1}\npushi {elem2}\n'
+        code += f'\tpushs {elem1}\n\tpushi {elem2}\n\tpushs {elem1}\n\tpushi {elem2}\n'
     else:
-        code += f'pushs {elem1}\npushs {elem2}\npushs {elem1}\npushs {elem2}\n'
+        code += f'\tpushs {elem1}\n\tpushs {elem2}\n\tpushs {elem1}\n\tpushs {elem2}\n'
+
     myStack.append(elem2)
     myStack.append(elem1)
     myStack.append(elem2)
     myStack.append(elem1)
+    
     p[0] = code
 
 def p_elem_DROP(p):
     'elem : DROP'
-    global myStack
-    elem = myStack.pop()
-    p[0] = '\tpop 1\n'
+    global myStack, flag_function
+
+    if flag_function == 0:
+       if len(myStack) > 0: 
+            myStack.pop()
+       p[0] = '\tpop 1\n'
+    else:
+        p[0] = '\tpop 1\n'
 
 def p_elem_ID(p):
     'elem : ID'
@@ -250,69 +277,98 @@ def p_operador(p):
                 | INF
                 | INFEQUAL
     '''
-    global myStack
-    if (len(myStack) < 2):
-        raise Exception('Not enough elements in the stack to perform an operation.')
-    
-    elem1 = myStack.pop()      # ultimo 
-    elem2 = myStack.pop()      # primeiro  
-    
-    if (type(elem1) == int and type(elem2) == int):
+    global myStack, flag_function
 
+    if flag_function == 0:
+        if (len(myStack) < 2):
+            raise Exception('Not enough elements in the stack to perform an operation.')
+        
+        elem1 = myStack.pop()      # ultimo 
+        elem2 = myStack.pop()      # primeiro  
+        
+        if (type(elem1) == int and type(elem2) == int):
+
+            if p[1] == '+':
+                myStack.append(elem2 + elem1)
+                p[0] = '\tadd\n'
+            elif p[1] == '-':
+                myStack.append(elem2 - elem1)
+                p[0] = '\tsub\n'
+            elif p[1] == '/':
+                myStack.append(elem2 / elem1)
+                p[0] = '\tdiv\n'
+            elif p[1] == '*':
+                myStack.append(elem2 * elem1)
+                p[0] = '\tmul\n'
+            elif p[1] == '%':
+                myStack.append(elem2 % elem1)
+                p[0] = '\tmod\n'
+            elif p[1] == '^':
+                myStack.append(elem2 ** elem1)
+                p[0] = '\tpow\n'
+            elif p[1] == '/2':
+                myStack.append(elem2)
+                myStack.append(elem1 / 2)
+                p[0] = '\tpushi 2\n'+ '\tdiv\n'
+            elif p[1] == '=':
+                if elem2 == elem1:
+                    myStack.append(1)
+                else:
+                    myStack.append(0)
+                p[0] = '\tequal\n'
+            elif p[1] == '>':
+                if elem2 > elem1:
+                    myStack.append(1)
+                else:
+                    myStack.append(0)       
+                p[0] = '\tsup\n'
+            elif p[1] == '>=':
+                if elem2 >= elem1:
+                    myStack.append(1)
+                else:
+                    myStack.append(0)
+                p[0] = '\tsupeq\n'
+            elif p[1] == '<':
+                if elem2 < elem1:
+                    myStack.append(1)
+                else:
+                    myStack.append(0)
+                p[0] = '\tinf\n'
+            elif p[1] == '<=':
+                if elem2 <= elem1:
+                    myStack.append(1)
+                else:
+                    myStack.append(0)
+                p[0] = '\tinfeq\n'
+        else:
+            raise Exception('Invalid types for operation, the last two elements in the stack must be integers.\n')
+    else:
         if p[1] == '+':
-            myStack.append(elem2 + elem1)
             p[0] = '\tadd\n'
         elif p[1] == '-':
-            myStack.append(elem2 - elem1)
             p[0] = '\tsub\n'
         elif p[1] == '/':
-            myStack.append(elem2 / elem1)
             p[0] = '\tdiv\n'
         elif p[1] == '*':
-            myStack.append(elem2 * elem1)
             p[0] = '\tmul\n'
         elif p[1] == '%':
-            myStack.append(elem2 % elem1)
             p[0] = '\tmod\n'
         elif p[1] == '^':
-            myStack.append(elem2 ** elem1)
             p[0] = '\tpow\n'
         elif p[1] == '/2':
-            myStack.append(elem2)
-            myStack.append(elem1 / 2)
             p[0] = '\tpushi 2\n'+ '\tdiv\n'
         elif p[1] == '=':
-            if elem2 == elem1:
-                myStack.append(1)
-            else:
-                myStack.append(0)
             p[0] = '\tequal\n'
         elif p[1] == '>':
-            if elem2 > elem1:
-                myStack.append(1)
-            else:
-                myStack.append(0)       
             p[0] = '\tsup\n'
         elif p[1] == '>=':
-            if elem2 >= elem1:
-                myStack.append(1)
-            else:
-                myStack.append(0)
             p[0] = '\tsupeq\n'
         elif p[1] == '<':
-            if elem2 < elem1:
-                myStack.append(1)
-            else:
-                myStack.append(0)
             p[0] = '\tinf\n'
         elif p[1] == '<=':
-            if elem2 <= elem1:
-                myStack.append(1)
-            else:
-                myStack.append(0)
             p[0] = '\tinfeq\n'
-    else:
-        raise Exception('Invalid types for operation, the last two elements in the stack must be integers.\n')
+
+
 
 def p_cond_else(p):
     'condicional : IF input ELSE input THEN input'
