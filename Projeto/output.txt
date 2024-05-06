@@ -1,0 +1,8 @@
+START
+
+	pushi 5
+factorial:
+		writei
+	
+
+STOP

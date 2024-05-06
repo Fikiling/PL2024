@@ -1,0 +1,4 @@
+: factorial ( n -- n! )
+ dup ;
+
+5 factorial 
