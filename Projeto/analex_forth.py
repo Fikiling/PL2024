@@ -120,6 +120,10 @@ def t_2PONTOS(t):
     t.lexer.begin('beginF')
     return t
 
+def t_CHAR(t):
+    r'(?i)(?<!\S)char(?!\S)'
+    return t
+
 def t_beginF_FUNCAO(t):
     r'(?<!\S)[a-zA-Z_-][a-zA-Z_123456789-]*(?!\S)'
 
@@ -185,9 +189,6 @@ def t_EMIT(t):
     r'(?i)(?<!\S)emit(?!\S)'
     return t
 
-def t_CHAR(t):
-    r'(?i)(?<!\S)char(?!\S)'
-    return t
 
 
 def t_SPACES(t):
@@ -242,6 +243,10 @@ def t_THEN(t):
     r'(?i)(?<!\S)then(?!\S)'
     return t
 
+def t_CARATER(t):
+    r'(?<!\S).(?!\S)'
+    return t
+
 def t_ID(t):
     r'(?<!\S)[a-zA-Z_][a-zA-Z_0-9!?\-]*(?!\S)'
     if t.type == 'ID':
@@ -252,9 +257,6 @@ def t_ID(t):
         
     return t
 
-def t_CARATER(t):
-    r'(?<!\S).(?!\S)'
-    return t
 
 t_ignore = ' \n\t'
 t_beginF_ignore = ' \n\t'
@@ -273,11 +275,13 @@ lex.begin('INITIAL')
 lex.functions = []
 lex.flagFunction = 0
 
-'''
+#'''
 
 file = """
-:  hello-world ( -- )
- ." Hello, World!" cr ;
+: factorial ( n -- n! )
+ . ;
+ 
+CHAR a factorial
 """
 
 lex.input(file)
@@ -285,4 +289,4 @@ lex.input(file)
 while tok := lex.token():
     print(tok)
 
-'''
+#'''

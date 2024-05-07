@@ -27,7 +27,7 @@ flag_function = 0 # 0 -> não está dentro de uma função, 1 -> está dentro de
 #      | SWAP                           DONE
 #      | CR                             DONE
 #      | EMIT                           DONE
-#      | CHAR                           DONE
+#      | CHAR CARATER                   DONE
 #      | SPACES                         DONE
 #      | SPACE                          DONE       
 #      | KEY                            DONE (half way)

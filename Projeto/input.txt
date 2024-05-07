@@ -1,8 +1,4 @@
 : factorial ( n -- n! )
- dup 0 = if
- drop 1
- else
- dup 1 - recurse *
- then ;
+ 2DUP ;
  
-5 factorial
+ 2 3 factorial
