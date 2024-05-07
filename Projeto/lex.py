@@ -1,10 +1,28 @@
-r = 3 
-t = 2
-# falso da 0, true 1 ou seja 3 <= 2
-# pushi 3 primeiro (elem2)
-# pushi 2 ultimo   (elem1)
-t1 = r <= t
-print(t1) 
+counter_do = 0
+delimitadores_do = {}
+
+with open("input.txt", "r") as file:
+    codigo = file.read()
+
+for linha in codigo.split('\n'):
+    counter_do += linha.lower().count('do') 
+
+
+for elem in range(counter_do):
+    primeiro = (elem + 1)  * 2 - 2
+    segundo = primeiro + 1
+    delimitadores_do[elem + 1] = (primeiro, segundo)
+
+vars = ''
+for elem in range(counter_do):
+    vars += '\tpushi 0\n'
+    vars += '\tpushi 0\n'
+
+
+
+print("Quantidade de do's encontrados:", counter_do)
+print("Delimitadores gerados:", delimitadores_do)
+
 
 
 '''
@@ -25,7 +43,20 @@ print(t1)
 
 -----------------------------------------------------------------------------------------------------
 
+: faz ( -- )
+    5 1 DO
+        ." ola"
+    LOOP ;
+faz
 
+-----------------------------------------------------------------------------------------------------
+
+: sum ( n -- sum )
+ 0 swap 1 do
+ i +
+ loop ;
+
+5 sum .
 
 
 '''

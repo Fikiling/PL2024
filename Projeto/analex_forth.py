@@ -22,8 +22,6 @@ reserved = {
     'until': 'UNTIL',
     'while': 'WHILE',
     'repeat': 'REPEAT',
-    'do': 'DO',
-    'loop': 'LOOP',
     'variable': 'VARIABLE',
 
 }
@@ -38,9 +36,7 @@ tokens = (
     'RESTO',
     'POTENCIA',
     '2PONTOS',
-    'FUNCAO',
     'PONTOVIRGULA',
-    'ID',
     'ZEROEQUAL',
     'ZEROLESS',
     'ZEROGREAT',
@@ -53,8 +49,6 @@ tokens = (
     'SWAP',
     'CR',
     'EMIT',
-    'CHAR',
-    'CARATER',
     'SPACES',
     'SPACE',
     'KEY',
@@ -68,8 +62,14 @@ tokens = (
     'IF',
     'ELSE',
     'THEN',
-
-) + tuple(reserved.values())
+    'DO',
+    'LOOP',
+    'I_COUNTER',
+    'CHAR',
+    'CARATER',
+    'FUNCAO',
+    'ID'
+)
 
 states = (
     ('beginF', 'exclusive'), 
@@ -118,21 +118,6 @@ def t_2PONTOS(t):
     r'(?<!\S)\:(?!\S)'
     t.value = '2PONTOS'
     t.lexer.begin('beginF')
-    return t
-
-def t_CHAR(t):
-    r'(?i)(?<!\S)char(?!\S)'
-    return t
-
-def t_beginF_FUNCAO(t):
-    r'(?<!\S)[a-zA-Z_-][a-zA-Z_123456789-]*(?!\S)'
-
-    if lex.flagFunction == 1: 
-        raise SyntaxError("Não é possível definir uma função dentro de outra função")
-
-    lex.flagFunction = 1
-    t.lexer.functions.append(t.value)
-    t.lexer.begin('INITIAL')
     return t
 
 def t_PONTOVIRGULA(t):
@@ -189,8 +174,6 @@ def t_EMIT(t):
     r'(?i)(?<!\S)emit(?!\S)'
     return t
 
-
-
 def t_SPACES(t):
     r'(?i)(?<!\S)spaces(?!\S)'
     return t
@@ -243,8 +226,35 @@ def t_THEN(t):
     r'(?i)(?<!\S)then(?!\S)'
     return t
 
+def t_DO(t):
+    r'(?i)(?<!\S)do(?!\S)'
+    return t
+
+def t_LOOP(t):
+    r'(?i)(?<!\S)loop(?!\S)'
+    return t
+
+def t_I_COUNTER(t):
+    r'(?i)(?<!\S)i(?!\S)'
+    return t
+
+def t_CHAR(t):
+    r'(?i)(?<!\S)char(?!\S)'
+    return t
+
 def t_CARATER(t):
     r'(?<!\S).(?!\S)'
+    return t
+
+def t_beginF_FUNCAO(t):
+    r'(?<!\S)[a-zA-Z_-][a-zA-Z_123456789-]*(?!\S)'
+
+    if lex.flagFunction == 1: 
+        raise SyntaxError("Não é possível definir uma função dentro de outra função")
+
+    lex.flagFunction = 1
+    t.lexer.functions.append(t.value)
+    t.lexer.begin('INITIAL')
     return t
 
 def t_ID(t):
@@ -252,7 +262,7 @@ def t_ID(t):
     if t.type == 'ID':
         if (t.value in t.lexer.functions):
             return t
-        elif (t.value not in reserved):
+        else:
             raise Exception(f'Function {t.value} is not defined.')
         
     return t
@@ -275,7 +285,7 @@ lex.begin('INITIAL')
 lex.functions = []
 lex.flagFunction = 0
 
-#'''
+'''
 
 file = """
 : factorial ( n -- n! )
@@ -289,4 +299,4 @@ lex.input(file)
 while tok := lex.token():
     print(tok)
 
-#'''
+'''

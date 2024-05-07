@@ -4,9 +4,10 @@ import analex_forth as analex
 
 myStack = []
 functions = {}
-codigo_forth = []
-indice = -1
 counter_IF = 1
+i = 1
+counter_do = 0
+delimitadores_do = {}
 flag_function = 0 # 0 -> não está dentro de uma função, 1 -> está dentro de uma função
 
 
@@ -34,22 +35,7 @@ flag_function = 0 # 0 -> não está dentro de uma função, 1 -> está dentro de
 #      | DUP                            DONE
 #      | 2DUP                           DONE
 #      | DROP                           DONE
-#      | ROT
-#      | OVER
-#      | TUCK
-#      | NIP
-#      | NEG
-#      | ABS
-#      | MIN
-#      | MAX
-#      | AND
-#      | OR
-#      | XOR
-#      | NOT
-#      | LSHIFT
-#      | RSHIFT
-#      | BEGIN
-#      | UNTIL
+#      | ICOUNTER                       DONE
 # operador : SOMA               
 #          | SUBTRACAO
 #          | DIVISAO
@@ -65,6 +51,8 @@ flag_function = 0 # 0 -> não está dentro de uma função, 1 -> está dentro de
 #          
 # condicional : IF input ELSE input THEN input
 #             | IF input THEN input
+# ciclo : DO input LOOP
+#       | BEGIN input UNTIL 
 # empty :
 
 
@@ -94,6 +82,9 @@ def p_linha_condicional(p):
     'linha : condicional'
     p[0] = p[1]
 
+def p_linha_ciclo(p):
+    'linha : ciclo'
+    p[0] = p[1]
 
 def p_funcao(p):
     'funcao : FUNCAO'
@@ -120,11 +111,10 @@ def p_elem_POINT(p):
         if len(myStack) == 0:
             raise Exception('Not enough elements in the stack to perform an operation.')
         elem = myStack.pop()
-    
         if type(elem) == int:
-            p[0] = '\twrites\n'
-        elif type(elem) == str:
             p[0] = '\twritei\n'
+        elif type(elem) == str:
+            p[0] = '\twrites\n'
         else:
             raise Exception('Invalid type for operation, the last element in the stack must be an integer or a string.\n')
     else:
@@ -152,7 +142,6 @@ def p_elem_CR(p):
     'elem : CR'
     p[0] = '\twriteln \n'
 
-#--------------------------------------------------------
 def p_elem_EMIT(p):
     'elem : EMIT'
     global myStack, flag_function
@@ -246,6 +235,11 @@ def p_elem_DROP(p):
     else:
         p[0] = '\tpop 1\n'
 
+def p_elem_I_COUNTER(p):
+    'elem : I_COUNTER'
+    global i
+    p[0] = '\tpushg ' + str(delimitadores_do[i][0])  + '\n'
+
 def p_elem_ID(p):
     'elem : ID'
     global functions
@@ -288,53 +282,53 @@ def p_operador(p):
         
         if (type(elem1) == int and type(elem2) == int):
 
-            if p[1] == '+':
+            if p[1] == 'SOMA':
                 myStack.append(elem2 + elem1)
                 p[0] = '\tadd\n'
-            elif p[1] == '-':
+            elif p[1] == 'SUBTRACAO':
                 myStack.append(elem2 - elem1)
                 p[0] = '\tsub\n'
-            elif p[1] == '/':
+            elif p[1] == 'DIVISAO':
                 myStack.append(elem2 / elem1)
                 p[0] = '\tdiv\n'
-            elif p[1] == '*':
+            elif p[1] == 'MULTIPLICACAO':
                 myStack.append(elem2 * elem1)
                 p[0] = '\tmul\n'
-            elif p[1] == '%':
+            elif p[1] == 'RESTO':
                 myStack.append(elem2 % elem1)
                 p[0] = '\tmod\n'
-            elif p[1] == '^':
+            elif p[1] == 'POTENCIA':
                 myStack.append(elem2 ** elem1)
                 p[0] = '\tpow\n'
-            elif p[1] == '/2':
+            elif p[1] == 'DIVIDE_BY_2':
                 myStack.append(elem2)
                 myStack.append(elem1 / 2)
                 p[0] = '\tpushi 2\n'+ '\tdiv\n'
-            elif p[1] == '=':
+            elif p[1] == 'EQUAL':
                 if elem2 == elem1:
                     myStack.append(1)
                 else:
                     myStack.append(0)
                 p[0] = '\tequal\n'
-            elif p[1] == '>':
+            elif p[1] == 'SUP':
                 if elem2 > elem1:
                     myStack.append(1)
                 else:
                     myStack.append(0)       
                 p[0] = '\tsup\n'
-            elif p[1] == '>=':
+            elif p[1] == 'SUPEQUAL':
                 if elem2 >= elem1:
                     myStack.append(1)
                 else:
                     myStack.append(0)
                 p[0] = '\tsupeq\n'
-            elif p[1] == '<':
+            elif p[1] == 'INF':
                 if elem2 < elem1:
                     myStack.append(1)
                 else:
                     myStack.append(0)
                 p[0] = '\tinf\n'
-            elif p[1] == '<=':
+            elif p[1] == 'INFEQUAL':
                 if elem2 <= elem1:
                     myStack.append(1)
                 else:
@@ -343,32 +337,30 @@ def p_operador(p):
         else:
             raise Exception('Invalid types for operation, the last two elements in the stack must be integers.\n')
     else:
-        if p[1] == '+':
+        if p[1] == 'SOMA':
             p[0] = '\tadd\n'
-        elif p[1] == '-':
+        elif p[1] == 'SUBTRACAO':
             p[0] = '\tsub\n'
-        elif p[1] == '/':
+        elif p[1] == 'DIVISAO':
             p[0] = '\tdiv\n'
-        elif p[1] == '*':
+        elif p[1] == 'MULTIPLICACAO':
             p[0] = '\tmul\n'
-        elif p[1] == '%':
+        elif p[1] == 'RESTO':
             p[0] = '\tmod\n'
-        elif p[1] == '^':
+        elif p[1] == 'POTENCIA':
             p[0] = '\tpow\n'
-        elif p[1] == '/2':
+        elif p[1] == 'DIVIDE_BY_2':
             p[0] = '\tpushi 2\n'+ '\tdiv\n'
-        elif p[1] == '=':
+        elif p[1] == 'EQUAL':
             p[0] = '\tequal\n'
-        elif p[1] == '>':
+        elif p[1] == 'SUP':
             p[0] = '\tsup\n'
-        elif p[1] == '>=':
+        elif p[1] == 'SUPEQUAL':
             p[0] = '\tsupeq\n'
-        elif p[1] == '<':
+        elif p[1] == 'INF':
             p[0] = '\tinf\n'
-        elif p[1] == '<=':
+        elif p[1] == 'INFEQUAL':
             p[0] = '\tinfeq\n'
-
-
 
 def p_cond_else(p):
     'condicional : IF input ELSE input THEN input'
@@ -383,6 +375,13 @@ def p_cond_then(p):
     p[0] = '\tjz endif' + str(counter_IF) +'\n' + p[2] + 'jump endif' + str(counter_IF) + '\n' + 'endif' + str(counter_IF) + ':\n' + p[4]
     counter_IF += 1
 
+def p_ciclo_do(p):
+    'ciclo : DO input LOOP'
+    global delimitadores_do, i
+    # se tiver pushi 5  \n pushi 1
+	#         stroreg 0 (1) \n storeg 1 (5)    0 inf | 1 sup
+    p[0] = '\tstoreg '+ str(delimitadores_do[i][0]) + '\n' + '\tstoreg '+ str(delimitadores_do[i][1]) + '\n' + 'do' + str(i) + ':\n' + '\tpushg ' + str(delimitadores_do[i][1]) + '\n' + '\tpushg ' + str(delimitadores_do[i][0]) + '\n' + '\tsub\n' + '\tjz endDo' + str(i) + '\n' + p[2] + '\tpushg ' + str(delimitadores_do[i][0]) + '\n' + '\tpushi 1\n\tadd\n' + '\tstoreg '+ str(delimitadores_do[i][0]) + '\n' + '\tjump do' + str(i) + '\n' + 'endDo' + str(counter_do) + ':\n'
+    i += 1
 
 def p_empty(p):
     'empty :'
@@ -404,50 +403,30 @@ analex.lex.flagFunction = 0
 with open("input.txt", "r") as file:
     codigo = file.read()
 
+# preparar variaveis para os dos 
+for linha in codigo.split('\n'):
+    counter_do += linha.lower().count('do') 
+
+for elem in range(counter_do):
+    primeiro = (elem + 1)  * 2 - 2
+    segundo = primeiro + 1
+    delimitadores_do[elem + 1] = (primeiro, segundo)
+
+vars = ''
+for elem in range(counter_do):
+    vars += '\tpushi 0\n'
+    vars += '\tpushi 0\n'
+vars += '\n'
+# ---------------------------------------------------
+
 result = parser.parse(codigo)
 
 with open("output.txt", "w") as file:
+    file.write(vars)
     file.write("START\n\n")
     file.write(result)
     file.write("\nSTOP")
 
 
 
-# -----------------------Minhas Funções----------------------------
-
-
-def input_multiline():
-    global codigo_forth
-    global indice
-    linha = ""
-    
-    while linha != "FIM":
-        linha = input()
-        if linha != "FIM":
-            codigo_forth.append(linha)
-            indice += 1
-    print("------------------FIM DE BLOCO-----------------")
-
-
-
-'''
-print("Regras de escrita:")
-print("     FIM -> fim de bloco de código")
-print("     CTRL+D > termina o programa.")
-print("Digite seu código FORTH:")
-
-try:
-        while True:
-            # Receber input
-            input_multiline()
-            codigo_forth_completo = '\n'.join(codigo_forth)
-            
-            # Processar input
-            analex.lex.flagFunction = 0
-            result = parser.parse(codigo_forth_completo)
-            print(result)
-
-except EOFError:  # Captura Ctrl+D 
-        print("Ctrl+D recebido ---> Programa a encerrar.")
-'''
 
