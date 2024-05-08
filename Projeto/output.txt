@@ -1,5 +1,9 @@
 	pushi 0
 	pushi 0
+	pushi 0
+	pushi 0
+	pushi 0
+	pushi 0
 
 START
 
@@ -23,6 +27,26 @@ sum:
 		storeg 0
 		jump do1
 	endDo1:
+	
+	writei
+	pushi 1
+	pushi 2
+	pushi 1
+	pushi 2
+	writei
+	writei
+	writei
+	writei
+	// Variavel declarada com id: a
+	// Variavel declarada com id: b
+	pushi 4
+	storeg 5
+	pushi 5
+	storeg 4
+sub:
+		pushg 5
+		pushg 4
+		sub
 	
 	writei
 

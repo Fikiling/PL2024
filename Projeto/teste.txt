@@ -1,0 +1,77 @@
+SPACES / DEPTH
+
+1:
+
+    7 2 * 1 + . 
+
+-----------------------------------------------------------------------------------------------------
+2:
+
+CHAR W .
+CHAR % DUP . EMIT
+CHAR A DUP .
+32 + EMIT
+
+-----------------------------------------------------------------------------------------------------
+3:
+
+    : func1 if ." Sucesso1" CR else ." Falha1" CR then ;
+    1 func1
+
+    : func2 if ." Falha2" CR else ." Sucesso2" CR then ;
+    0 func2
+
+    : func3 if ." Sucesso3" CR then ;
+    1 func3
+
+    : func4 if ." Falha4" CR then ." Sucesso4" CR ; 
+    0 func4
+
+    : func5 if if ." Sucesso5" CR else ." Falha5" CR then ." Sucesso5" CR then ." Sucesso5" CR ;
+    1 1 func5
+
+-----------------------------------------------------------------------------------------------------
+5:
+
+    : sum ( n -- sum )
+    0 swap 1 do
+    i +
+    loop ;
+
+    5 sum .
+
+-----------------------------------------------------------------------------------------------------
+6: 
+    : maior2 2dup > if drop else swap drop then ;
+    : maior3 maior2 maior2 ;
+    : maiorN depth 1 do maior2 loop ;
+    2 11 3 4 45 8 19 maiorN .
+
+-----------------------------------------------------------------------------------------------------
+7: 
+
+    VARIABLE a 
+    VARIABLE b 
+    : sub ( a b -- sub )
+    a @ b @ - ;
+
+    4 a ! 5 b ! sub .
+
+-----------------------------------------------------------------------------------------------------
+
+8:
+
+    : sum ( n -- sum )
+    0 swap 1 do
+    i +
+    loop ;
+    5 sum .
+    
+    1 2 2dup . . . . 
+    
+    VARIABLE a 
+    VARIABLE b 
+    : sub ( a b -- sub )
+    a @ b @ - ;
+
+    4 a ! 5 b ! sub .

@@ -4,10 +4,13 @@ import analex_forth as analex
 
 myStack = []
 functions = {}
+delimitadores_do = {}
 counter_IF = 1
 i = 1
 counter_do = 0
-delimitadores_do = {}
+counter_dup2 = 0
+var_counter = 0 
+my_vars = {}
 flag_function = 0 # 0 -> não está dentro de uma função, 1 -> está dentro de uma função
 
 
@@ -86,6 +89,10 @@ def p_linha_ciclo(p):
     'linha : ciclo'
     p[0] = p[1]
 
+def p_linha_variaveis(p):
+    'linha : variaveis'
+    p[0] = p[1]
+
 def p_funcao(p):
     'funcao : FUNCAO'
     global flag_function
@@ -152,15 +159,17 @@ def p_elem_EMIT(p):
         if type(elem) != int:
             raise Exception('Invalid type for operation, the last element in the stack must be an integer.\n')
         else:
-            p[0] = '\writechr\n'
+            p[0] = '\twritechr\n'
     else:
-        p[0] = '\writechr\n'
+        p[0] = '\twritechr\n'
 
 def p_elem_CHAR(p):
-    'elem : CHAR CARATER'
+    'elem : CHAR'
     global myStack
-    myStack.append(ord(p[2]))
-    p[0] = '\tpushi ' + str(ord(p[2])) + '\n'
+    partes = p[1].split(' ') 
+    carater = partes[1]
+    myStack.append(ord(carater))
+    p[0] = '\tpushi ' + str(ord(carater)) + '\n'
 
 def p_elem_SPACES(p):
     'elem : SPACES'
@@ -200,29 +209,30 @@ def p_elem_DUP(p):
 
 def p_elem_2DUP(p):
     'elem : 2DUP'
-    global myStack
+    global myStack, flag_function, counter_dup2
     
-    if len(myStack) < 2:
-        raise Exception('Not enough elements in the stack to perform an operation.')
-    
-    elem1 = myStack.pop()
-    elem2 = myStack.pop()
-    code = '\tpop 2\n'
-    if (type(elem1) == int and type(elem2) != int):
-        code += f'\tpushi {elem1}\n\tpushs {elem2}\n\tpushi {elem1}\n\tpushs {elem2}\n'
-    if (type(elem1) == int and type(elem2) == int):
-        code += f'\tpushi {elem1}\n\tpushi {elem2}\n\tpushi {elem1}\n\tpushi {elem2}\n'
-    elif (type(elem1) != int and type(elem2) == int):
-        code += f'\tpushs {elem1}\n\tpushi {elem2}\n\tpushs {elem1}\n\tpushi {elem2}\n'
-    else:
-        code += f'\tpushs {elem1}\n\tpushs {elem2}\n\tpushs {elem1}\n\tpushs {elem2}\n'
+    if flag_function == 0:
+        if len(myStack) >= 2:
+            elem1 = myStack.pop()
+            elem2 = myStack.pop()
+            code = ''
+            if (type(elem1) == int and type(elem2) != int):
+                code += f'\tpushi {elem2}\n\tpushs {elem1}\n'
+            if (type(elem1) == int and type(elem2) == int):
+                code += f'\tpushi {elem2}\n\tpushi {elem1}\n'
+            elif (type(elem1) != int and type(elem2) == int):
+                code += f'\tpushs {elem2}\n\tpushi {elem1}\n'
+            else:
+                code += f'\tpushs {elem2}\n\tpushs {elem1}\n'
 
-    myStack.append(elem2)
-    myStack.append(elem1)
-    myStack.append(elem2)
-    myStack.append(elem1)
-    
-    p[0] = code
+            myStack.append(elem2)
+            myStack.append(elem1)
+            myStack.append(elem2)
+            myStack.append(elem1)
+        
+        p[0] = code
+    else:
+        p[0] = '\tstoreg ' + str(counter_dup2 - 1) + '\n' + '\tstoreg ' + str(counter_dup2) + '\n' + 'pushg ' + str(counter_dup2) + '\n' + 'pushg ' + str(counter_dup2 - 1) + '\n' + 'pushg ' + str(counter_dup2) + '\n' + 'pushg ' + str(counter_dup2 - 1) + '\n'
 
 def p_elem_DROP(p):
     'elem : DROP'
@@ -293,7 +303,7 @@ def p_operador(p):
                 p[0] = '\tdiv\n'
             elif p[1] == 'MULTIPLICACAO':
                 myStack.append(elem2 * elem1)
-                p[0] = '\tmul\n'
+                p[0] = '\tmul\n' 
             elif p[1] == 'RESTO':
                 myStack.append(elem2 % elem1)
                 p[0] = '\tmod\n'
@@ -383,6 +393,42 @@ def p_ciclo_do(p):
     p[0] = '\tstoreg '+ str(delimitadores_do[i][0]) + '\n' + '\tstoreg '+ str(delimitadores_do[i][1]) + '\n' + 'do' + str(i) + ':\n' + '\tpushg ' + str(delimitadores_do[i][1]) + '\n' + '\tpushg ' + str(delimitadores_do[i][0]) + '\n' + '\tsub\n' + '\tjz endDo' + str(i) + '\n' + p[2] + '\tpushg ' + str(delimitadores_do[i][0]) + '\n' + '\tpushi 1\n\tadd\n' + '\tstoreg '+ str(delimitadores_do[i][0]) + '\n' + '\tjump do' + str(i) + '\n' + 'endDo' + str(counter_do) + ':\n'
     i += 1
 
+def p_variaveis_decl(p):
+    'variaveis : VAR_DECLARACAO'
+    global my_vars, var_counter, counter_dup2
+    index = var_counter + counter_dup2
+    
+    partes = p[1].split(' ') 
+    var = partes[1]
+    my_vars[var] = index
+    var_counter -= 1
+    
+    p[0] = '\t// Variavel declarada com id: ' + var + '\n' 
+
+def p_variaveis_atrib(p):
+    'variaveis : VAR_ATRIBUICAO'
+    global my_vars
+
+    partes = p[1].split(' ') 
+    var = partes[0]
+    if var not in my_vars:
+        raise Exception(f'Variável {var} não foi declarada.')
+    index = my_vars[var]
+    
+    p[0] = '\tstoreg ' + str(index) + '\n'
+
+def p_variaveis_chamada(p):
+    'variaveis : VAR_CHAMADA'
+    global my_vars
+
+    partes = p[1].split(' ')
+    var = partes[0]
+    if var not in my_vars:
+        raise Exception(f'Variável {var} não foi declarada.')
+    index = my_vars[var]
+    
+    p[0] = '\tpushg ' + str(index) + '\n'
+
 def p_empty(p):
     'empty :'
     pass
@@ -404,18 +450,34 @@ with open("input.txt", "r") as file:
     codigo = file.read()
 
 # preparar variaveis para os dos 
+flagDUP2 = 0
 for linha in codigo.split('\n'):
-    counter_do += linha.lower().count('do') 
+    counter_do += linha.lower().count('do')
+    var_counter += linha.lower().count('variable')
+    flagDUP2 += linha.lower().count('2dup')
 
 for elem in range(counter_do):
     primeiro = (elem + 1)  * 2 - 2
     segundo = primeiro + 1
     delimitadores_do[elem + 1] = (primeiro, segundo)
 
+if flagDUP2!=0:
+    counter_dup2 = counter_do + 2
+
 vars = ''
+# as vars do DO 
 for elem in range(counter_do):
     vars += '\tpushi 0\n'
     vars += '\tpushi 0\n'
+
+# as do dup2
+if counter_dup2!=0:
+    vars += '\tpushi 0\n' + '\tpushi 0\n'
+
+# as das variaveis
+for elem in range(var_counter):
+    vars += '\tpushi 0\n'
+
 vars += '\n'
 # ---------------------------------------------------
 

@@ -1,32 +1,7 @@
 import ply.lex as lex
 
-#NOTA: Formula para forçar TXT a estar separado de outros tokens: (?<!\S)TXT(?!\S)
 
-# Palavras reservadas Forth
-reserved = {
-    'rot': 'ROT',
-    'over': 'OVER',
-    'tuck': 'TUCK',
-    'nip': 'NIP',
-    'neg': 'NEG',
-    'abs': 'ABS',
-    'min': 'MIN',
-    'max': 'MAX',
-    'and': 'AND',
-    'or': 'OR',
-    'xor': 'XOR',
-    'not': 'NOT',
-    'lshift': 'LSHIFT',
-    'rshift': 'RSHIFT',
-    'begin': 'BEGIN',
-    'until': 'UNTIL',
-    'while': 'WHILE',
-    'repeat': 'REPEAT',
-    'variable': 'VARIABLE',
-
-}
-
-# Lista de tokens soma, adição, subtração, divisão, resto da divisão inteira, potência
+# Lista de tokens 
 tokens = (
     'NUM',
     'SOMA',
@@ -37,12 +12,7 @@ tokens = (
     'POTENCIA',
     '2PONTOS',
     'PONTOVIRGULA',
-    'ZEROEQUAL',
-    'ZEROLESS',
-    'ZEROGREAT',
     'EQUAL',
-    'LESS',
-    'GREAT',
     'POINT',
     'PRINTSTRING',
     'DIVIDE_BY_2',
@@ -66,7 +36,9 @@ tokens = (
     'LOOP',
     'I_COUNTER',
     'CHAR',
-    'CARATER',
+    'VAR_DECLARACAO',
+    'VAR_ATRIBUICAO',
+    'VAR_CHAMADA',
     'FUNCAO',
     'ID'
 )
@@ -126,28 +98,8 @@ def t_PONTOVIRGULA(t):
     t.value = 'PONTOVIRGULA'
     return t
 
-def t_ZEROEQUAL(t):
-    r'(?<!\S)\=0(?!\S)'
-    return t
-
-def t_ZEROLESS(t):
-    r'(?<!\S)\<0(?!\S)'
-    return t
-
-def t_ZEROGREAT(t):
-    r'(?<!\S)\>0(?!\S)'
-    return t
-
 def t_EQUAL(t):
     r'(?<!\S)\=(?!\S)'
-    return t
-
-def t_LESS(t):
-    r'(?<!\S)\<(?!\S)'
-    return t
-
-def t_GREAT(t):
-    r'(?<!\S)\>(?!\S)'
     return t
 
 def t_POINT(t):
@@ -239,11 +191,19 @@ def t_I_COUNTER(t):
     return t
 
 def t_CHAR(t):
-    r'(?i)(?<!\S)char(?!\S)'
+    r'(?i)(?<!\S)char\s.(?!\S)'
     return t
 
-def t_CARATER(t):
-    r'(?<!\S).(?!\S)'
+def t_VAR_DECLARACAO(t):
+    r'(?i)(?<!\S)variable\s[A-Za-z0-9_]+(?!\S)'
+    return t
+
+def t_VAR_ATRIBUICAO(t):
+    r'(?i)(?<!\S)[A-Za-z0-9_]+\s+!(?!\S)'
+    return t
+
+def t_VAR_CHAMADA(t):
+    r'(?i)(?<!\S)[A-Za-z0-9_]+\s@(?!\S)'
     return t
 
 def t_beginF_FUNCAO(t):
@@ -288,10 +248,10 @@ lex.flagFunction = 0
 '''
 
 file = """
-: factorial ( n -- n! )
- . ;
- 
-CHAR a factorial
+CHAR W .
+CHAR % DUP . EMIT
+CHAR A DUP .
+32 + EMIT
 """
 
 lex.input(file)
