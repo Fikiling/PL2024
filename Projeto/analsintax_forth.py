@@ -174,7 +174,7 @@ def p_elem_CHAR(p):
 def p_elem_SPACES(p):
     'elem : SPACES'
     global myStack
-    if len(myStack):
+    if len(myStack ) == 0:
         raise Exception('Not enough elements in the stack to perform an operation.')
     elem = myStack.pop()
     if type(elem) != int:
@@ -183,6 +183,8 @@ def p_elem_SPACES(p):
     for i in range(elem):
         result += '\t\tpushs " "\n'
         result += '\t\twrites\n'
+    result += '\t\tpushs " "\n'
+    result += '\t\twrites\n'
     p[0] = result
 
 def p_elem_SPACE(p):
@@ -314,31 +316,31 @@ def p_operador(p):
                 myStack.append(elem2)
                 myStack.append(elem1 / 2)
                 p[0] = '\tpushi 2\n'+ '\tdiv\n'
-            elif p[1] == 'EQUAL':
+            elif p[1] == '=':
                 if elem2 == elem1:
                     myStack.append(1)
                 else:
                     myStack.append(0)
                 p[0] = '\tequal\n'
-            elif p[1] == 'SUP':
+            elif p[1] == '>':
                 if elem2 > elem1:
                     myStack.append(1)
                 else:
                     myStack.append(0)       
                 p[0] = '\tsup\n'
-            elif p[1] == 'SUPEQUAL':
+            elif p[1] == '>=':
                 if elem2 >= elem1:
                     myStack.append(1)
                 else:
                     myStack.append(0)
                 p[0] = '\tsupeq\n'
-            elif p[1] == 'INF':
+            elif p[1] == '<':
                 if elem2 < elem1:
                     myStack.append(1)
                 else:
                     myStack.append(0)
                 p[0] = '\tinf\n'
-            elif p[1] == 'INFEQUAL':
+            elif p[1] == '<=':
                 if elem2 <= elem1:
                     myStack.append(1)
                 else:
@@ -361,15 +363,15 @@ def p_operador(p):
             p[0] = '\tpow\n'
         elif p[1] == 'DIVIDE_BY_2':
             p[0] = '\tpushi 2\n'+ '\tdiv\n'
-        elif p[1] == 'EQUAL':
+        elif p[1] == '=':
             p[0] = '\tequal\n'
-        elif p[1] == 'SUP':
+        elif p[1] == '>':
             p[0] = '\tsup\n'
-        elif p[1] == 'SUPEQUAL':
+        elif p[1] == '>=':
             p[0] = '\tsupeq\n'
-        elif p[1] == 'INF':
+        elif p[1] == '<':
             p[0] = '\tinf\n'
-        elif p[1] == 'INFEQUAL':
+        elif p[1] == '<=':
             p[0] = '\tinfeq\n'
 
 def p_cond_else(p):
@@ -388,9 +390,7 @@ def p_cond_then(p):
 def p_ciclo_do(p):
     'ciclo : DO input LOOP'
     global delimitadores_do, i
-    # se tiver pushi 5  \n pushi 1
-	#         stroreg 0 (1) \n storeg 1 (5)    0 inf | 1 sup
-    p[0] = '\tstoreg '+ str(delimitadores_do[i][0]) + '\n' + '\tstoreg '+ str(delimitadores_do[i][1]) + '\n' + 'do' + str(i) + ':\n' + '\tpushg ' + str(delimitadores_do[i][1]) + '\n' + '\tpushg ' + str(delimitadores_do[i][0]) + '\n' + '\tsub\n' + '\tjz endDo' + str(i) + '\n' + p[2] + '\tpushg ' + str(delimitadores_do[i][0]) + '\n' + '\tpushi 1\n\tadd\n' + '\tstoreg '+ str(delimitadores_do[i][0]) + '\n' + '\tjump do' + str(i) + '\n' + 'endDo' + str(counter_do) + ':\n'
+    p[0] = '\tstoreg '+ str(delimitadores_do[i][0]) + '\n' + '\tstoreg '+ str(delimitadores_do[i][1]) + '\n' + 'do' + str(i) + ':\n' + '\tpushg ' + str(delimitadores_do[i][1]) + '\n' + '\tpushg ' + str(delimitadores_do[i][0]) + '\n' + '\tsub\n' + '\tjz endDo' + str(i) + '\n' + p[2] + '\tpushg ' + str(delimitadores_do[i][0]) + '\n' + '\tpushi 1\n\tadd\n' + '\tstoreg '+ str(delimitadores_do[i][0]) + '\n' + '\tjump do' + str(i) + '\n' + 'endDo' + str(i) + ':\n'
     i += 1
 
 def p_variaveis_decl(p):

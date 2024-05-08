@@ -1,14 +1,2 @@
-    : sum ( n -- sum )
-    0 swap 1 do
-    i +
-    loop ;
-    5 sum .
-    
-    1 2 2dup . . . . 
-    
-    VARIABLE a 
-    VARIABLE b 
-    : sub ( a b -- sub )
-    a @ b @ - ;
-
-    4 a ! 5 b ! sub .
+10 0 do ." ola" I . loop 
+5 0 do ." adeus" I . loop

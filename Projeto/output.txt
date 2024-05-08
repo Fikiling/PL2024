@@ -2,52 +2,46 @@
 	pushi 0
 	pushi 0
 	pushi 0
-	pushi 0
-	pushi 0
 
 START
 
-	pushi 5
-sum:
-		pushi 0
-		swap
-		pushi 1
-		storeg 0
-		storeg 1
-	do1:
-		pushg 1
-		pushg 0
-		sub
-		jz endDo1
-		pushg 0
-		add
-		pushg 0
-		pushi 1
-		add
-		storeg 0
-		jump do1
-	endDo1:
-	
+	pushi 10
+	pushi 0
+	storeg 0
+	storeg 1
+do1:
+	pushg 1
+	pushg 0
+	sub
+	jz endDo1
+	pushs " ola"
+	writes 
+	pushg 0
 	writei
+	pushg 0
 	pushi 1
-	pushi 2
-	pushi 1
-	pushi 2
-	writei
-	writei
-	writei
-	writei
-	// Variavel declarada com id: a
-	// Variavel declarada com id: b
-	pushi 4
-	storeg 5
+	add
+	storeg 0
+	jump do1
+endDo1:
 	pushi 5
-	storeg 4
-sub:
-		pushg 5
-		pushg 4
-		sub
-	
+	pushi 0
+	storeg 2
+	storeg 3
+do2:
+	pushg 3
+	pushg 2
+	sub
+	jz endDo2
+	pushs " adeus"
+	writes 
+	pushg 2
 	writei
+	pushg 2
+	pushi 1
+	add
+	storeg 2
+	jump do2
+endDo2:
 
 STOP

@@ -248,10 +248,10 @@ lex.flagFunction = 0
 '''
 
 file = """
-CHAR W .
-CHAR % DUP . EMIT
-CHAR A DUP .
-32 + EMIT
+1 0 = 
+IF ." É zero! (Falha)" CR
+ELSE ." Não é zero! (Sucesso)" CR
+THEN ." Finish" CR
 """
 
 lex.input(file)
