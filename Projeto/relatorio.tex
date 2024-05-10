@@ -1,119 +1,280 @@
 \documentclass{article}
-
-% Language setting
-% Replace `english' with e.g. `spanish' to change the document language
 \usepackage[portuguese]{babel}
-
-% Set page size and margins
-% Replace `letterpaper' with `a4paper' for UK/EU standard size
-\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
-
-% Useful packages
+\usepackage[english]{babel}
+\usepackage{hyperref}
+\usepackage{indentfirst}
 \usepackage{amsmath}
-\usepackage{graphicx}
-\usepackage[colorlinks=true, allcolors=blue]{hyperref}
-
-\title{Relatório PL}
-\author{You}
 
 \begin{document}
-\maketitle
 
-\begin{abstract}
-Your abstract.
-\end{abstract}
+\begin{titlepage}
+    \centering
+    
+    {\small Universidade do Minho \\
+    Licenciatura em Engenharia Informática \par}
+    
+    \vspace*{\fill} % Espaço vertical elástico
 
-\section{Introduction}
+    {\huge\bfseries Unidade Curricular de Processamento de Linguagens \par}
+    
+    \vspace{0.5cm} % Espaço vertical de 0.5 cm
+    
+    {\normalsize Ano Letivo de 2023/2024 \par}
+    
+    \vspace{1cm} % Espaço vertical de 1 cm
+    
+    \hrulefill % Linha horizontal
+    
+    \vspace{1cm} % Espaço vertical de 1 cm
+    
+    {\huge\bfseries Compilador Forth \par}
+    
+    \vspace{0.5cm} % Espaço vertical de 0.5 cm
 
-Your introduction goes here! Simply start writing your document and use the Recompile button to view the updated PDF preview. Examples of commonly used commands and features are listed below, to help you get started.
+    
+    {\large\bfseries Projeto final \par}
 
-Once you're familiar with the editor, you can find various project settings in the Overleaf menu, accessed via the button in the very top left of the editor. To view tutorials, user guides, and further documentation, please visit our \href{https://www.overleaf.com/learn}{help library}, or head to our plans page to \href{https://www.overleaf.com/user/subscription/plans}{choose your plan}.
+    \vspace{1cm} % Espaço vertical de 1 cm
+    
+    \hrulefill % Linha horizontal
+    
+    \vspace{2cm} % Espaço vertical de 2 cm
 
-\section{Some examples to get started}
+    {\bfseries Grupo 41 \\}
+        {\normalsize Filipe Santos Gonçalves, a100696 \\ João Andrade Rodrigues, a100711 \\ Mateus Lemos Martins, a100645 \\ Rafael Vale da Costa Peixoto, a100754 \par}
+    
+    \vspace*{\fill} % Espaço vertical elástico
+    
+\end{titlepage}
 
-\subsection{How to create Sections and Subsections}
+    
 
-Simply use the section and subsection commands, as in this example document! With Overleaf, all the formatting and numbering is handled automatically according to the template you've chosen. If you're using the Visual Editor, you can also create new section and subsections via the buttons in the editor toolbar.
+\section*{Introdução}
 
-\subsection{How to include Figures}
+\vspace{0.5cm}
+        
+Este relatório descreve o desenvolvimento de um compilador Forth, conforme especificado no enunciado, capaz de gerar código para a máquina virtual disponibilizada.
 
-First you have to upload the image file from your computer using the upload link in the file-tree menu. Then use the includegraphics command to include it in your document. Use the figure environment and the caption command to add a number and a caption to your figure. See the code for Figure \ref{fig:frog} in this section for an example.
+\vspace{1cm}
 
-Note that your figure will automatically be placed in the most appropriate place for it, given the surrounding text and taking into account other figures or tables that may be close by. You can find out more about adding images to your documents in this help article on \href{https://www.overleaf.com/learn/how-to/Including_images_on_Overleaf}{including images on Overleaf}.
+\section*{Metodologia}
 
-\begin{figure}
-\centering
-\includegraphics[width=0.25\linewidth]{frog.jpg}
-\caption{\label{fig:frog}This frog was uploaded via the file-tree menu.}
-\end{figure}
+\vspace{0.5cm}
 
-\subsection{How to add Tables}
+O desenvolvimento do compilador Forth seguiu as seguintes etapas:
 
-Use the table and tabular environments for basic tables --- see Table~\ref{tab:widgets}, for example. For more information, please see this help article on \href{https://www.overleaf.com/learn/latex/tables}{tables}. 
+\vspace{0.5cm}
 
-\begin{table}
-\centering
-\begin{tabular}{l|r}
-Item & Quantity \\\hline
-Widgets & 42 \\
-Gadgets & 13
+    \subsection*{Estudo da Linguagem Forth:}   
+
+        \vspace{0.5cm}
+        
+        Inicialmente, foi realizada uma revisão detalhada da linguagem Forth, compreendendo suas principais características, como a notação pós-fixa, o uso de pilha de dados e sua extensibilidade.
+
+        \vspace{0.5cm}
+    
+    \subsection*{Análise do Enunciado:} 
+
+        \vspace{0.5cm}
+    
+        Em seguida, analisou-se cuidadosamente o enunciado do projeto, identificando os requisitos mínimos e as funcionalidades desejadas do compilador, assim como se estudou as funcionalidades e operações suportadas pela VM.
+
+        \vspace{0.5cm}
+    
+    \subsection*{Implementação das Funcionalidades:} 
+        
+        \vspace{0.5cm}
+        
+        Com base nos requisitos especificados, procedemos com a implementação das funcionalidades essenciais do compilador. Para isso, com uso das bibliotecas ply.lex e ply.yacc abordadas nas aulas, começou-se por identificar os tokens usados em Forth e concebeu-se a seguinte lista:
+
+\begin{center}
+    \begin{tabular}{|l|c|}
+    \hline
+    \textbf{Token} & \textbf{Expressão Regular} \\
+    \hline
+        COMENTARY & \verb|\( .* \)| \\
+        NUM & \verb|\d+| \\
+        SOMA & \verb|\+| \\
+        SUBTRACAO & \verb|\-| \\
+        DIVISAO & \verb|\/| \\
+        MULTIPLICACAO & \verb|\*| \\
+        RESTO & \verb|\%| \\
+        POTENCIA & \verb|\^| \\
+        2PONTOS & \verb|\:| \\
+        PONTOVIRGULA & \verb|\;| \\
+        EQUAL & \verb|=| \\
+        POINT & \verb|\.| \\
+        PRINTSTRING & \verb|\."[^"]*"| ou \verb|\.\([^"]*\)| \\
+        DIVIDE\_BY\_2 & \verb|2\/| \\
+        SWAP & \verb|swap| \\
+        CR & \verb|cr| \\
+        EMIT & \verb|emit| \\
+        SPACES & \verb|spaces| \\
+        SPACE & \verb|space| \\
+        KEY & \verb|key| \\
+        DUP & \verb|dup| \\
+        2DUP & \verb|2dup| \\
+        DROP & \verb|drop| \\
+        SUP & \verb|>| \\
+        SUPEQUAL & \verb|>=| \\
+        INF & \verb|<| \\
+        INFEQUAL & \verb|<=| \\
+        IF & \verb|if| \\
+        ELSE & \verb|else| \\
+        THEN & \verb|then| \\
+        DO & \verb|do| \\
+        LOOP & \verb|loop| \\
+        I\_COUNTER & \verb|i| \\
+        CHAR & \verb|char\s.\s| \\
+        VAR\_DECLARACAO & \verb|variable\s[A-Za-z0-9_]+| \\
+        VAR\_ATRIBUICAO & \verb|[A-Za-z0-9_]+\s+!| \\
+        VAR\_CHAMADA & \verb|[A-Za-z0-9_]+\s@| \\
+        FUNCAO & \verb|[a-zA-Z_][a-zA-Z_0-9]*| \\
+        ID & \verb|[a-zA-Z_][a-zA-Z_0-9!?-]*| \\
+\hline
 \end{tabular}
-\caption{\label{tab:widgets}An example table.}
-\end{table}
+\end{center}
 
-\subsection{How to add Comments and Track Changes}
+\vspace{1cm}
 
-Comments can be added to your project by highlighting some text and clicking ``Add comment'' in the top right of the editor pane. To view existing comments, click on the Review menu in the toolbar above. To reply to a comment, click on the Reply button in the lower right corner of the comment. You can close the Review pane by clicking its name on the toolbar when you're done reviewing for the time being.
+\smallskip
+    \noindent \textbf{Nota:} Todas as regex definidas, contêm \verb|(?i)(?<!\S)regex(?!\S)|, ocultado da tabela para tornar visualmente mais agradável, desta  maneira é garantido que um token de facto é uma única palavra e não está contido noutra palavra e case insensitive.
 
-Track changes are available on all our \href{https://www.overleaf.com/user/subscription/plans}{premium plans}, and can be toggled on or off using the option at the top of the Review pane. Track changes allow you to keep track of every change made to the document, along with the person making the change. 
+Após termos a lista de tokens e as suas expressões regulares, construíu-se o lexer. Passando então a uma das partes mais desafiantes deste projeto, a tal construção da grámatica.
 
-\subsection{How to add Lists}
+Na construção da mesma foi utlizada uma abordagem em que se consideram múltiplas linhas e o input ou é vazio ou é linha com a chamada recursiva à esquerda do input.
 
-You can make lists with automatic numbering \dots
-
-\begin{enumerate}
-\item Like this,
-\item and like this.
-\end{enumerate}
-\dots or bullet points \dots
-\begin{itemize}
-\item Like this,
-\item and like this.
-\end{itemize}
-
-\subsection{How to write Mathematics}
-
-\LaTeX{} is great at typesetting mathematics. Let $X_1, X_2, \ldots, X_n$ be a sequence of independent and identically distributed random variables with $\text{E}[X_i] = \mu$ and $\text{Var}[X_i] = \sigma^2 < \infty$, and let
-\[S_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
-      = \frac{1}{n}\sum_{i}^{n} X_i\]
-denote their mean. Then as $n$ approaches infinity, the random variables $\sqrt{n}(S_n - \mu)$ converge in distribution to a normal $\mathcal{N}(0, \sigma^2)$.
+Uma linha ou é um elem ( um número, um operador, um Char ou uma função reservada forth como Emit, Space...), um condicional (bloco if), um ciclo (loop) ou atribuição de variáveis.
+É então apresentada a gramática concebida abaixo.
 
 
-\subsection{How to change the margins and paper size}
+\begin{align*}
+input & : \text{ input linha} \\
+      & | \text{ empty} \\
+linha & : \text{ elem} \\
+      & | \text{ 2PONTOS funcao input PONTOVIRGULA} \\
+      & | \text{ condicional} \\
+      & | \text{ ciclo} \\
+      & | \text{ variaveis} \\
+funcao & : \text{ FUNCAO} \\
+elem & : \text{ NUM} \\
+     & | \text{ operador} \\
+     & | \text{ ID} \\
+     & | \text{ POINT} \\
+     & | \text{ PRINTSTRING} \\
+     & | \text{ SWAP} \\
+     & | \text{ CR} \\
+     & | \text{ EMIT} \\
+     & | \text{ CHAR} \\
+     & | \text{ SPACES} \\
+     & | \text{ SPACE} \\
+     & | \text{ KEY} \\
+     & | \text{ DUP} \\
+     & | \text{ 2DUP} \\
+     & | \text{ DROP} \\
+     & | \text{ ICOUNTER} \\
+operador & : \text{ SOMA} \\
+         & | \text{ SUBTRACAO} \\
+         & | \text{ DIVISAO} \\
+         & | \text{ MULTIPLICACAO} \\
+         & | \text{ RESTO} \\
+         & | \text{ POTENCIA} \\
+         & | \text{ DIVIDE\_BY\_2} \\
+         & | \text{ EQUAL} \\
+         & | \text{ SUP} \\
+         & | \text{ SUPEQUAL} \\
+         & | \text{ INF} \\
+         & | \text{ INFEQUAL} \\
+condicional & : \text{ IF input ELSE input THEN input} \\
+            & | \text{ IF input THEN input} \\
+ciclo & : \text{ DO input LOOP} \\
+variaveis & : \text{ VAR\_DECLARACAO} \\
+         & | \text{ VAR\_ATRIBUICAO} \\
+         & | \text{ VAR\_CHAMADA} \\
+empty & : \\
+\end{align*}
 
-Usually the template you're using will have the page margins and paper size set correctly for that use-case. For example, if you're using a journal article template provided by the journal publisher, that template will be formatted according to their requirements. In these cases, it's best not to alter the margins directly.
+\subsubsection*{Suporte às expressões aritméticas:}
+    \vspace{0.5cm}
+    Sendo Forth uma linguagem de notação pós fixa e a VM funcionando da mesma maneira, a geração de código desta parte é direta.
+    Assim a única verificação que precisamos fazer é se há números na stack para poder realizar a operação introduzida e posteriormente gerar o código necessário. Para isso foi definida uma lista (stack) variável interna do nosso analisador sintático que sempre que capta um operador verifica se existem elementos na variável stack definida para realizar a operação, da mesma maneira sempre que é captado um número o mesmo é adicionado à stack e quando aplicada uma operação os valores da stack são atualizados.
+    Posto isto a geração de código para a VM dum número foi feita através do "pushi NUM" e a geração de código do operador traduzida para o correspondente da VM. 
+    \vspace{1cm}
 
-If however you're using a more general template, such as this one, and would like to alter the margins, a common way to do so is via the geometry package. You can find the geometry package loaded in the preamble at the top of this example file, and if you'd like to learn more about how to adjust the settings, please visit this help article on \href{https://www.overleaf.com/learn/latex/page_size_and_margins}{page size and margins}.
+\subsubsection*{Criação de funções:}
+    \vspace{0.5cm}
+    Neste segundo ponto já foi necessário uma abordagem diferente, como tal a estratégia definida consistiu em sempre que uma função era definida, o ID da função é adicionado a um dicionário interno em que para um ID o código produzido por essa função é lá armazenado, e sempre que um ID é captado é verificado se essa função existe no dicionário e caso exista o código correspondente é injetado no output por cada chamada.
+    Não foi utilizado qualquer tipo de labels e chamadas da função na VM através de call e pusha, uma vez que desta maneira o conteúdo da stack na VM é mais facilmente gerido e é menos propício a erros.
+    De notar que tudo o que é definido dentro de uma função não é armazenado na nossa variável interna stack porque o momento em que a função é definida e chamada pode ser totalmente diferente então o tratamento de erros deste lado é passado para o compilador da VM, por exemplo caso uma função some os últimos dois elementos e no momento em que é chamada não há elementos na stack.
+    \vspace{1cm}
 
-\subsection{How to change the document language and spell check settings}
+\subsubsection*{Print de carateres e strings:}
+    \vspace{0.5cm}
+    Uma vez termos a nossa variável interna da stack, sempre que um ponto( ".") é capturado é verificado o tipo do último elemento na stack, caso seja um INT é gerado o comando "writei" ou caso seja uma STRING é gerado o comando "writes" para a VM. Caso seja capturado o  PRINTSTRING (." string")
+    em nada é alterado o conteúdo da stack, uma vez este comando apenas imprimir uma string no terminal, é por isso gerado um pushs com a string capturada entre as " " e depois realizado um "writes".
+    No caso do EMIT é automaticamente passado o comando "writechr" que faz o mesmo que o EMIT na VM. 
+    Por fim quando um CHAR é reconhecido pelo nosso lexer, que reconhece na mesma regex a palavra CHAR seguida do carater, é gerado o comando "pushi" juntamente com o ord(carater) para a VM.
+    \vspace{1cm}
 
-Overleaf supports many different languages, including multiple different languages within one document. 
+\subsubsection*{Condicionais:}
+    \vspace{0.5cm}
 
-To configure the document language, simply edit the option provided to the babel package in the preamble at the top of this example project. To learn more about the different options, please visit this help article on \href{https://www.overleaf.com/learn/latex/International_language_support}{international language support}.
+    No caso dos condicionais, "ifs" (mais propriamente ditos), é utilizado um contador por cada "if" e criado uma label na VM, "if" com o contador e todos os elementos dentro do bloco if têm o mesmo contador associado à sua label tais como o "jz endif" que verifica a condição do "if" , o "jump" "endif para caso entre no bloco "if" salte por cima do "else" e desta maneira é utilizada uma recursividade entre os tokens "IF" e "ELSE" para suportar "ifs" dentro de "ifs" e tudo mais, sendo a chamada recursiva da definição mais superior da gramática.
+   
+    \vspace{1cm}
 
-To change the spell check language, simply open the Overleaf menu at the top left of the editor window, scroll down to the spell check setting, and adjust accordingly.
+\subsubsection*{Ciclos:}
+    \vspace{0.5cm}
 
-\subsection{How to add Citations and a References List}
+    Esta funcionalidade foi a que mais pensamento requeriu e estudo, uma vez que numa fase inicial não se estava a conseguir chegar a nenhuma solução.
+    Foi então que se decidiu criar um contador para bloco de ciclo, desta maneira é lido o código forth, antes do parser começar, dado como input e então por cada "DO" o contador é incrementado numa unidade, após isso para cada unidade do contador é criado um dicionário interno que para cada unidade do contador (chave) origina um tuplo com os índices das váriaveis dos limites inferiores e superiores do ciclo, é reservado então um espaço para cada delimitador antes de a VM começar (START).
+    Desta maneira como fazemos um tratamento dos dados anterior ao parser começar, conseguimos prever e reservar o que o parser necessitará quando ocorrer o geramento de código para a VM.
 
-You can simply upload a \verb|.bib| file containing your BibTeX entries, created with a tool such as JabRef. You can then cite entries from it, like this: \cite{greenwade93}. Just remember to specify a bibliography style, as well as the filename of the \verb|.bib|. You can find a \href{https://www.overleaf.com/help/97-how-to-include-a-bibliography-using-bibtex}{video tutorial here} to learn more about BibTeX.
+    Assim no geramento de cada bloco "do" os útlimos dois valores da stack são armazenados nas variavéis correspondentes e carregados outra vez para a stack, o limite inferior é então subtraído ao limite superior e executado o "jz endDo" caso seja o final das iterações, caso contrário no final de cada iteração é lido o limite inferior e este é incrementado e voltado a ser guardado no seu espaço reservado garantindo assim o funcionamento correto na VM.  
+   
+    \vspace{1cm}
 
-If you have an \href{https://www.overleaf.com/user/subscription/plans}{upgraded account}, you can also import your Mendeley or Zotero library directly as a \verb|.bib| file, via the upload menu in the file-tree.
+\subsubsection*{Variáveis:}
+    \vspace{0.5cm}
 
-\subsection{Good luck!}
+    Uma vez termos usado variavéis para o tratamento de ciclos, foi utilizada a mesma estratégia para esta parte. É então lido o ficheiro previamente e por cada declaração das variáveis é utilizado um contador das mesmas e alocado um espaço para cada antes da execução da VM.
+    Quando o parser começa a sua execução por cada declaração captada é adicionado a um dicionario com id da variável ao indice do seu espaço reservado e quando esta é atualizada ou chamada o mesmo indice é utilizado para a manipulação do seu conteúdo. 
+   
+    \vspace{1cm}
 
-We hope you find Overleaf useful, and do take a look at our \href{https://www.overleaf.com/learn}{help library} for more tutorials and user guides! Please also let us know if you have any feedback using the Contact Us link at the bottom of the Overleaf menu --- or use the contact form at \url{https://www.overleaf.com/contact}.
+\subsubsection*{Casos adicionais:}
+    \vspace{0.5cm}
+    2DUP - a abordagem do tratamento desta função predefinida pela linguagem forth exigiu também uma abordagem relativamente diferente quando comparada às outras funções. Pelo facto de poder ser usada na definição de uma função, com uso da stack inerna do analisador sintático, não é possível saber o tipo dos elementos que estão na stack no momento que a função é chamada pois ela pode ser definida numa parte do código onde a stack está vazia e depois chamada quando elementos foram adicionados à stack.
+    Por isso são usados dois espaços na tabela de variáveis que servem para quando a função "2dup" é chamada através do comando "storeg" guardar os últimos dois valores da stack nessas posições e logo de seguida executar os "pushg" dessas duas variavéis desta função duas vezes para cada de forma a simular o funcionamento da "2dup" em forth.
+ 
+    i - esta pequena função que tem como resultado o número de cada iteração dentro de um bloco do é feita sempre utilizando a subtração dos delimitadores definidos para esse bloco do ciclo, descrito anteriormente.
+   
+    \vspace{1cm}
 
-\bibliographystyle{alpha}
-\bibliography{sample}
+
+\subsubsection*{Conclusão:}
+    \vspace{0.5cm}
+
+    O desenvolvimento do compilador Forth foi uma experiência enriquecedora, que permitiu aprofundar conhecimentos concretos em engenharia de linguagens e programação generativa. 
+    Este projeto intrudoziu-nos uma nova linguagem que segue uma metodologia e 
+    métodos de programar completamente diferente daqueles a que estamos habituados o que nos desenvolveu novas maneiras e abordagens para problemas futuros.
+    Permitiu também o conhecimento de duas bibliotecas python (lex e yacc) que auxiliaram e melhoraram o nosso desenvolvimento de gramáticas e também um aprofundamentos sobre os autómatos utilizados.
+    De uma maneira geral, concluímos que o projeto foi finalizado satisfatóriamente cumprindo todos os requisitos inicialmente propostos.
+    
+   
+    \vspace{1cm}
+
+\subsubsection*{Referências:}
+    \vspace{0.5cm}
+
+    Documentação de um manual online da linguagem Forth - \href{https://www.forth.com/starting-forth/}{https://www.forth.com/starting-forth/}.
+
+    IDE de desenvolvimento e testes - \href{https://www.jdoodle.com/execute-forth-online}{https://www.jdoodle.com/execute-forth-online}.
+    
+    Máquina Virtual (VM) - \href{https://ewvm.epl.di.uminho.pt/}{https://ewvm.epl.di.uminho.pt/}.
+
+    
+
+    \vspace{1cm}
 
 \end{document}

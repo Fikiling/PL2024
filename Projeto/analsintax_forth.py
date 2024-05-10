@@ -23,22 +23,22 @@ flag_function = 0 # 0 -> não está dentro de uma função, 1 -> está dentro de
 #       | ciclo
 #       | variaveis
 # funcao : FUNCAO
-# elem : NUM                            DONE
-#      | operador                       DONE
-#      | ID                             DONE
-#      | POINT                          DONE
-#      | PRINTSTRING                    DONE
-#      | SWAP                           DONE
-#      | CR                             DONE
-#      | EMIT                           DONE
-#      | CHAR CARATER                   DONE
-#      | SPACES                         DONE
-#      | SPACE                          DONE       
-#      | KEY                            DONE (half way)
-#      | DUP                            DONE
-#      | 2DUP                           DONE
-#      | DROP                           DONE
-#      | ICOUNTER                       DONE
+# elem : NUM                            
+#      | operador                       
+#      | ID                             
+#      | POINT                          
+#      | PRINTSTRING                    
+#      | SWAP                           
+#      | CR                             
+#      | EMIT                           
+#      | CHAR                  
+#      | SPACES                         
+#      | SPACE                                 
+#      | KEY                             
+#      | DUP                            
+#      | 2DUP                           
+#      | DROP                           
+#      | ICOUNTER                       
 # operador : SOMA               
 #          | SUBTRACAO
 #          | DIVISAO
@@ -55,7 +55,9 @@ flag_function = 0 # 0 -> não está dentro de uma função, 1 -> está dentro de
 # condicional : IF input ELSE input THEN input
 #             | IF input THEN input
 # ciclo : DO input LOOP
-#       | BEGIN input UNTIL 
+# variaveis : VAR_DECLARACAO
+#          | VAR_ATRIBUICAO
+#          | VAR_CHAMADA
 # empty :
 
 
