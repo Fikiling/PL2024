@@ -1,47 +1,75 @@
-	pushi 0
-	pushi 0
-	pushi 0
-	pushi 0
 
 START
 
-	pushi 10
-	pushi 0
-	storeg 0
-	storeg 1
-do1:
-	pushg 1
-	pushg 0
-	sub
-	jz endDo1
-	pushs " ola"
-	writes 
-	pushg 0
-	writei
-	pushg 0
 	pushi 1
-	add
-	storeg 0
-	jump do1
-endDo1:
-	pushi 5
+func1:
+		jz else1
+		pushs " Sucesso1"
+		writes 
+		writeln 
+	jump endif1
+	else1:
+		pushs " Falha1"
+		writes 
+		writeln 
+	endif1:
+	
 	pushi 0
-	storeg 2
-	storeg 3
-do2:
-	pushg 3
-	pushg 2
-	sub
-	jz endDo2
-	pushs " adeus"
-	writes 
-	pushg 2
-	writei
-	pushg 2
+func2:
+		jz else2
+		pushs " Falha2"
+		writes 
+		writeln 
+	jump endif2
+	else2:
+		pushs " Sucesso2"
+		writes 
+		writeln 
+	endif2:
+	
 	pushi 1
-	add
-	storeg 2
-	jump do2
-endDo2:
+func3:
+		jz endif3
+		pushs " Sucesso3"
+		writes 
+		writeln 
+	jump endif3
+	endif3:
+	
+	pushi 0
+func4:
+		jz endif4
+		pushs " Falha4"
+		writes 
+		writeln 
+	jump endif4
+	endif4:
+		pushs " Sucesso4"
+		writes 
+		writeln 
+	
+	pushi 1
+	pushi 1
+func5:
+		jz endif6
+		jz else5
+		pushs " Sucesso5"
+		writes 
+		writeln 
+	jump endif5
+	else5:
+		pushs " Falha5"
+		writes 
+		writeln 
+	endif5:
+		pushs " Sucesso5"
+		writes 
+		writeln 
+	jump endif6
+	endif6:
+		pushs " Sucesso5"
+		writes 
+		writeln 
+	
 
 STOP

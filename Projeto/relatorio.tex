@@ -41,7 +41,8 @@
     \vspace{2cm} % Espaço vertical de 2 cm
 
     {\bfseries Grupo 41 \\}
-        {\normalsize Filipe Santos Gonçalves, a100696 \\ João Andrade Rodrigues, a100711 \\ Mateus Lemos Martins, a100645 \\ Rafael Vale da Costa Peixoto, a100754 \par}
+        {\normalsize Filipe Santos Gonçalves, a100696 \\ João Andrade Rodrigues, a100711 
+ \\ Mateus Lemos Martins, a100645 \\ Rafael Vale da Costa Peixoto, a100754 \par}
     
     \vspace*{\fill} % Espaço vertical elástico
     
@@ -249,10 +250,197 @@ empty & : \\
  
     i - esta pequena função que tem como resultado o número de cada iteração dentro de um bloco do é feita sempre utilizando a subtração dos delimitadores definidos para esse bloco do ciclo, descrito anteriormente.
    
+    \vspace{10cm}
+
+\section{Exemplos de funcionamento:}
+        \vspace{2cm}
+        
+        \begin{verbatim}
+        Input:  : sum ( n -- sum )
+                    0 swap 1 do
+                    i +
+                    loop ;
+                    5 sum .
+        \end{verbatim}
+
+        
+        \begin{verbatim}
+        Output: 	
+                    	pushi 0
+                    	pushi 0
+                    
+                    START
+                    
+                    	pushi 5
+                    sum:
+                    		pushi 0
+                    		swap
+                    		pushi 1
+                    		storeg 0
+                    		storeg 1
+                    	do1:
+                    		pushg 1
+                    		pushg 0
+                    		sub
+                    		jz endDo1
+                    		pushg 0
+                    		add
+                    		pushg 0
+                    		pushi 1
+                    		add
+                    		storeg 0
+                    		jump do1
+                    	endDo1:
+                    	
+                    	writei
+                    
+                    STOP
+        \end{verbatim}
+        
     \vspace{1cm}
 
+    \vspace{0.5cm}
+        
+        \begin{verbatim}
+        Input:      VARIABLE a 
+                    VARIABLE b 
+                    : sub ( a b -- sub )
+                    a @ b @ - ;
+                
+                    4 a ! 5 b ! sub .
 
-\subsubsection*{Conclusão:}
+        \end{verbatim}
+
+        
+        \begin{verbatim}
+        Output: 	
+                    		pushi 0
+                        	pushi 0
+                        
+                        START
+                        
+                        	// Variavel declarada com id: a
+                        	// Variavel declarada com id: b
+                        	pushi 4
+                        	storeg 2
+                        	pushi 5
+                        	storeg 1
+                        sub:
+                        		pushg 2
+                        		pushg 1
+                        		sub
+                        	
+                        	writei
+                        
+                        STOP
+        \end{verbatim}
+        
+    \vspace{1cm}
+
+    \vspace{0.5cm}
+        
+        \begin{verbatim}
+        Input:      : func1 if ." Sucesso1" CR else ." Falha1" CR then ;
+                     1 func1
+
+                    : func2 if ." Falha2" CR else ." Sucesso2" CR then ;
+                    0 func2
+                
+                    : func3 if ." Sucesso3" CR then ;
+                    1 func3
+                
+                    : func4 if ." Falha4" CR then ." Sucesso4" CR ; 
+                    0 func4
+                
+                    : func5 if if ." Sucesso5" CR else ." Falha5" CR then ." Sucesso5" CR 
+                             then ." Sucesso5" CR ;
+                    1 1 func5
+
+        \end{verbatim}
+
+        
+        \begin{verbatim}
+        Output: 			
+                    START
+                    
+                    	pushi 1
+                    func1:
+                    		jz else1
+                    		pushs " Sucesso1"
+                    		writes 
+                    		writeln 
+                    	jump endif1
+                    	else1:
+                    		pushs " Falha1"
+                    		writes 
+                    		writeln 
+                    	endif1:
+                    	
+                    	pushi 0
+                    func2:
+                    		jz else2
+                    		pushs " Falha2"
+                    		writes 
+                    		writeln 
+                    	jump endif2
+                    	else2:
+                    		pushs " Sucesso2"
+                    		writes 
+                    		writeln 
+                    	endif2:
+                    	
+                    	pushi 1
+                    func3:
+                    		jz endif3
+                    		pushs " Sucesso3"
+                    		writes 
+                    		writeln 
+                    	jump endif3
+                    	endif3:
+                    	
+                    	pushi 0
+                    func4:
+                    		jz endif4
+                    		pushs " Falha4"
+                    		writes 
+                    		writeln 
+                    	jump endif4
+                    	endif4:
+                    		pushs " Sucesso4"
+                    		writes 
+                    		writeln 
+                    	
+                    	pushi 1
+                    	pushi 1
+                    func5:
+                    		jz endif6
+                    		jz else5
+                    		pushs " Sucesso5"
+                    		writes 
+                    		writeln 
+                    	jump endif5
+                    	else5:
+                    		pushs " Falha5"
+                    		writes 
+                    		writeln 
+                    	endif5:
+                    		pushs " Sucesso5"
+                    		writes 
+                    		writeln 
+                    	jump endif6
+                    	endif6:
+                    		pushs " Sucesso5"
+                    		writes 
+                    		writeln 
+                    	
+                    
+                    STOP
+        \end{verbatim}
+        
+    \vspace{1cm}
+    
+
+\section*{Conclusão:}
     \vspace{0.5cm}
 
     O desenvolvimento do compilador Forth foi uma experiência enriquecedora, que permitiu aprofundar conhecimentos concretos em engenharia de linguagens e programação generativa. 
